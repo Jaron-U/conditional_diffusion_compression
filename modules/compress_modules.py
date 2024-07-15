@@ -57,8 +57,7 @@ class Compressor(nn.Module):
 
         mean, scale = input.chunk(2, 1)
         latent_distribution = NormalDistribution(mean, scale.clamp(min=0.1))
-        q_latent = quantize(latent, "dequantize", latent_distribution.mean)
-        print("q_latent.shape: ", q_latent.shape, "q_latent[0, 0, :5, :5]", q_latent[0, 0, :5, :5])
+        q_latent = quantize(latent, "dequantize", latent_distribution.mean)        
         state4bpp = {
             "latent": latent,
             "hyper_latent": hyper_latent,

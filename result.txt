@@ -1,0 +1,14 @@
+SOTA 0.0032
+{'ori_size': 736501, 'ori_avg_pix': 105.6313705444336, 'ori_bpp': 14.984151204427084, 'compressed_size': 692419, 'compressed_avg_pix': 105.68981170654297, 'bpp': tensor(0.7661, device='cuda:0'), 'c_bpp': 14.087300618489584, 'PSNR': 76.50500666753005}
+{'ori_size': 502888, 'ori_avg_pix': 96.5632561577691, 'ori_bpp': 10.231282552083334, 'compressed_size': 431714, 'compressed_avg_pix': 96.57544962565105, 'bpp': tensor(0.3176, device='cuda:0'), 'c_bpp': 8.783243815104166, 'PSNR': 83.02376761093097}
+{'ori_size': 617995, 'ori_avg_pix': 76.80983055962457, 'ori_bpp': 12.573140462239584, 'compressed_size': 505959, 'compressed_avg_pix': 77.14487796359592, 'bpp': tensor(0.4450, device='cuda:0'), 'c_bpp': 10.29376220703125, 'PSNR': 80.83905454516466}
+
+image-l2-use_weight5-vimeo-d64-t8193-b0.0032-noise-cosine-01-float32-aux0_2.pt
+{'ori_size': 736501, 'ori_avg_pix': 105.6313705444336, 'ori_bpp': 14.984151204427084, 'compressed_size': 252483, 'compressed_avg_pix': 126.89601559109158, 'bpp': tensor(0.2388, device='cuda:0'), 'c_bpp': 5.13677978515625, 'PSNR': 53.60637408002252}
+{'ori_size': 502888, 'ori_avg_pix': 96.5632561577691, 'ori_bpp': 10.231282552083334, 'compressed_size': 255084, 'compressed_avg_pix': 127.0021709865994, 'bpp': tensor(0.1249, device='cuda:0'), 'c_bpp': 5.189697265625, 'PSNR': 53.43130219002706}
+{'ori_size': 617995, 'ori_avg_pix': 76.80983055962457, 'ori_bpp': 12.573140462239584, 'compressed_size': 253658, 'compressed_avg_pix': 126.96956888834636, 'bpp': tensor(0.1194, device='cuda:0'), 'c_bpp': 5.160685221354167, 'PSNR': 52.95786090521876}
+
+image-l2-use_weight5-vimeo-d64-t8193-b1e-05-x-cosine-01-float32-aux0_2.pt
+{'ori_size': 736501, 'ori_avg_pix': 105.6313705444336, 'ori_bpp': 14.984151204427084, 'compressed_size': 753468, 'compressed_avg_pix': 105.61494869656033, 'bpp': tensor(5.6749, device='cuda:0'), 'c_bpp': 15.329345703125, 'PSNR': 77.73484749313465}
+{'ori_size': 502888, 'ori_avg_pix': 96.5632561577691, 'ori_bpp': 10.231282552083334, 'compressed_size': 492067, 'compressed_avg_pix': 96.61597018771701, 'bpp': tensor(3.9320, device='cuda:0'), 'c_bpp': 10.011128743489584, 'PSNR': 85.49180739259859}
+{'ori_size': 617995, 'ori_avg_pix': 76.80983055962457, 'ori_bpp': 12.573140462239584, 'compressed_size': 580091, 'compressed_avg_pix': 77.13874393039279, 'bpp': tensor(4.6613, device='cuda:0'), 'c_bpp': 11.801981608072916, 'PSNR': 83.11623350855675}

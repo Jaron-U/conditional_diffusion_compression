@@ -21,15 +21,15 @@ parser.add_argument("--decay", type=float, default=0.8)
 parser.add_argument("--minf", type=float, default=0.2)
 parser.add_argument("--optimizer", type=str, default="adam")
 parser.add_argument("--n_workers", type=int, default=4)
-parser.add_argument("--n_step", type=int, default=100) # 1000000
-parser.add_argument("--scheduler_checkpoint_step", type=int, default=100) # 1000000
-parser.add_argument("--log_checkpoint_step", type=int, default=500) # 5000
+parser.add_argument("--n_step", type=int, default=8193) # 1000000
+parser.add_argument("--scheduler_checkpoint_step", type=int, default=1000000) # 1000000
+parser.add_argument("--log_checkpoint_step", type=int, default=5000) # 5000
 parser.add_argument("--load_model", action="store_true")
 parser.add_argument("--load_step", action="store_true")
 parser.add_argument("--batch_size", type=int, default=4)
 parser.add_argument('--pred_mode', type=str, default='noise', help='prediction mode')
 parser.add_argument('--loss_type', type=str, default='l2', help='type of loss')
-parser.add_argument('--iteration_step', type=int, default=200, help='number of iterations') # 20000
+parser.add_argument('--iteration_step', type=int, default=20000, help='number of iterations') # 20000
 parser.add_argument('--sample_steps', type=int, default=129, help='number of steps for sampling (for validation)')
 parser.add_argument('--embed_dim', type=int, default=64, help='dimension of embedding')
 parser.add_argument('--embd_type', type=str, default="01", help='timestep embedding type')
@@ -45,7 +45,7 @@ parser.add_argument('--clip_noise', action='store_true', help='if clip the noise
 parser.add_argument('--val_num_of_batch', type=int, default=1, help='number of batches for validation')
 parser.add_argument('--additional_note', type=str, default='', help='additional note')
 parser.add_argument('--var_schedule', type=str, default='cosine', help='variance schedule')
-parser.add_argument('--aux_loss_type', type=str, default='l2', help='type of auxiliary loss')
+parser.add_argument('--aux_loss_type', type=str, default='lpips', help='type of auxiliary loss')
 parser.add_argument("--aux_weight", type=float, default=0, help="weight for aux loss")
 parser.add_argument("--data_name", type=str, default="vimeo", help="name of dataset")
 parser.add_argument("--data_root", type=str, default="/home/jianglongyu/mydrive/", help="root of dataset")
@@ -96,17 +96,17 @@ if __name__ == "__main__":
         out_channels=config.context_channels,
     )
 
-    if config.ae_path != "":
-        ae_fn = AutoencoderKL(
-                    z_channels=config.z_channels,
-                    ch_mult=config.ae_dim_mult,
-                    ch=config.ae_base_dim,
-                    img_ch=3,
-                    num_res_blocks=2
-                )
-        ae_fn.load_state_dict(torch.load(config.ae_path))
-    else:
-        ae_fn = None
+    # if config.ae_path != "":
+    #     ae_fn = AutoencoderKL(
+    #                 z_channels=config.z_channels,
+    #                 ch_mult=config.ae_dim_mult,
+    #                 ch=config.ae_base_dim,
+    #                 img_ch=3,
+    #                 num_res_blocks=2
+    #             )
+    #     ae_fn.load_state_dict(torch.load(config.ae_path))
+    # else:
+    ae_fn = None
     
     denoise_model = Unet(
         dim=config.embed_dim,
