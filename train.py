@@ -21,16 +21,16 @@ parser.add_argument("--decay", type=float, default=0.8)
 parser.add_argument("--minf", type=float, default=0.2)
 parser.add_argument("--optimizer", type=str, default="adam")
 parser.add_argument("--n_workers", type=int, default=4)
-parser.add_argument("--n_step", type=int, default=8193) # 1000000
+parser.add_argument("--n_step", type=int, default=5) # 1000000
 parser.add_argument("--scheduler_checkpoint_step", type=int, default=1000000) # 1000000
 parser.add_argument("--log_checkpoint_step", type=int, default=5000) # 5000
 parser.add_argument("--load_model", action="store_true")
 parser.add_argument("--load_step", action="store_true")
 parser.add_argument("--batch_size", type=int, default=4)
-parser.add_argument('--pred_mode', type=str, default='noise', help='prediction mode')
+parser.add_argument('--pred_mode', type=str, default='x', help='prediction mode')
 parser.add_argument('--loss_type', type=str, default='l2', help='type of loss')
-parser.add_argument('--iteration_step', type=int, default=20000, help='number of iterations') # 20000
-parser.add_argument('--sample_steps', type=int, default=129, help='number of steps for sampling (for validation)')
+parser.add_argument('--iteration_step', type=int, default=3, help='number of iterations') # 20000
+parser.add_argument('--sample_steps', type=int, default=2, help='number of steps for sampling (for validation)')
 parser.add_argument('--embed_dim', type=int, default=64, help='dimension of embedding')
 parser.add_argument('--embd_type', type=str, default="01", help='timestep embedding type')
 parser.add_argument('--dim_mults', type=int, nargs='+', default=[1, 2, 3, 4, 5, 6], help='dimension multipliers')
@@ -38,7 +38,7 @@ parser.add_argument('--hyper_dim_mults', type=int, nargs='+', default=[4, 4, 4],
 parser.add_argument('--context_dim_mults', type=int, nargs='+', default=[1, 2, 3, 4], help='context dimension multipliers')
 parser.add_argument('--reverse_context_dim_mults', type=int, nargs='+', default=[4, 3, 2, 1], help='reverse context dimension multipliers')
 parser.add_argument('--context_channels', type=int, default=64, help='number of context channels')
-parser.add_argument('--use_weighted_loss', action='store_true', help='if use weighted loss')
+parser.add_argument('--use_weighted_loss', action='store_true', default=True, help='if use weighted loss')
 parser.add_argument('--weight_clip', type=int, default=5, help='snr clip for weighted loss')
 parser.add_argument('--use_mixed_precision', action='store_true', help='if use mixed precision')
 parser.add_argument('--clip_noise', action='store_true', help='if clip the noise during sampling')

@@ -241,7 +241,7 @@ class GaussianDiffusion(nn.Module):
         noise = torch.randn_like(x_start)
 
         x_noisy = self.q_sample(x_start=x_start, t=t, noise=noise)
-        if self.denoise_fn.embd_type == "01":
+        if self.denoise_fn.embd_type == "01": # make the time step as a continuous value
             fx = self.denoise_fn(
                 x_noisy, t.float().unsqueeze(-1) / self.num_timesteps, context=context_dict["output"]
             )

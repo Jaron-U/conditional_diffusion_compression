@@ -14,21 +14,21 @@ class Compressor(nn.Module):
         out_channels=3,
     ):
         super().__init__()
-        self.channels = channels
-        self.out_channels = out_channels
-        self.dims = [channels, *map(lambda m: dim * m, dim_mults)]
-        self.in_out = list(zip(self.dims[:-1], self.dims[1:]))
-        self.reversed_dims = [*map(lambda m: dim * m, reverse_dim_mults), out_channels]
-        self.reversed_in_out = list(zip(self.reversed_dims[:-1], self.reversed_dims[1:]))
+        self.channels = channels # 3
+        self.out_channels = out_channels # 64
+        self.dims = [channels, *map(lambda m: dim * m, dim_mults)] # [3, 64, 128, 192, 256]
+        self.in_out = list(zip(self.dims[:-1], self.dims[1:])) # [(3, 64), (64, 128), (128, 192), (192, 256)]
+        self.reversed_dims = [*map(lambda m: dim * m, reverse_dim_mults), out_channels] # [256, 192, 128, 64, 64]
+        self.reversed_in_out = list(zip(self.reversed_dims[:-1], self.reversed_dims[1:])) # [(256, 192), (192, 128), (128, 64), (64, 64)]
         assert self.dims[-1] == self.reversed_dims[0]
-        self.hyper_dims = [self.dims[-1], *map(lambda m: dim * m, hyper_dims_mults)]
-        self.hyper_in_out = list(zip(self.hyper_dims[:-1], self.hyper_dims[1:]))
+        self.hyper_dims = [self.dims[-1], *map(lambda m: dim * m, hyper_dims_mults)] # [256, 256, 256, 256]
+        self.hyper_in_out = list(zip(self.hyper_dims[:-1], self.hyper_dims[1:])) # [(256, 256), (256, 256), (256, 256)]
         self.reversed_hyper_dims = list(
             reversed([self.dims[-1] * 2, *map(lambda m: dim * m, hyper_dims_mults)])
-        )
+        ) # [256, 256, 256, 512]
         self.reversed_hyper_in_out = list(
             zip(self.reversed_hyper_dims[:-1], self.reversed_hyper_dims[1:])
-        )
+        ) # [(256, 256), (256, 256), (256, 512)]
         self.prior = FlexiblePrior(self.hyper_dims[-1])
 
     def get_extra_loss(self):
@@ -42,8 +42,8 @@ class Compressor(nn.Module):
 
     def encode(self, input):
         for i, (resnet, down) in enumerate(self.enc):
-            input = resnet(input)
-            input = down(input)
+            input = resnet(input) # ([4, 64, 256, 256])
+            input = down(input) # ([4, 64, 128, 128])
         latent = input
         for i, (conv, act) in enumerate(self.hyper_enc):
             input = conv(input)
@@ -86,6 +86,8 @@ class Compressor(nn.Module):
             q_latent = quantize(latent, "dequantize", latent_distribution.mean)
         hyper_rate = -self.prior.likelihood(q_hyper_latent).log2()
         cond_rate = -latent_distribution.likelihood(q_latent).log2()
+        temp = hyper_rate.sum(dim=(1, 2, 3))
+        temp2 = cond_rate.sum(dim=(1, 2, 3))
         bpp = (hyper_rate.sum(dim=(1, 2, 3)) + cond_rate.sum(dim=(1, 2, 3))) / (H * W)
         return bpp
 
