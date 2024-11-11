@@ -12,7 +12,7 @@ from modules.compress_modules import ResnetCompressor
 
 parser = argparse.ArgumentParser(description="values from bash script")
 parser.add_argument("--device", type=int, default=0, help="cuda device id")
-parser.add_argument("--beta", type=float, default=1e-5, help="beta for bitrate control")
+parser.add_argument("--beta", type=float, default=0.0032, help="beta for bitrate control") # for warm up 1e-5
 parser.add_argument("--z_channels", type=int, default=3)
 parser.add_argument("--ae_dim_mult", type=int, nargs='+', default=[1,2,4])
 parser.add_argument("--ae_base_dim", type=int, default=128)
@@ -20,17 +20,17 @@ parser.add_argument("--lr", type=float, default=5e-5)
 parser.add_argument("--decay", type=float, default=0.8)
 parser.add_argument("--minf", type=float, default=0.2)
 parser.add_argument("--optimizer", type=str, default="adam")
-parser.add_argument("--n_workers", type=int, default=4)
-parser.add_argument("--n_step", type=int, default=5) # 1000000
-parser.add_argument("--scheduler_checkpoint_step", type=int, default=1000000) # 1000000
+parser.add_argument("--n_workers", type=int, default=1)
+parser.add_argument("--n_step", type=int, default=1000000) # for warm up 500000
+parser.add_argument("--scheduler_checkpoint_step", type=int, default=100000) # 1000000
 parser.add_argument("--log_checkpoint_step", type=int, default=5000) # 5000
-parser.add_argument("--load_model", action="store_true")
-parser.add_argument("--load_step", action="store_true")
+parser.add_argument("--load_model", action="store_true", default=True)
+parser.add_argument("--load_step", action="store_true", default=True)
 parser.add_argument("--batch_size", type=int, default=4)
-parser.add_argument('--pred_mode', type=str, default='x', help='prediction mode')
+parser.add_argument('--pred_mode', type=str, default='x', help='prediction mode') # x
 parser.add_argument('--loss_type', type=str, default='l2', help='type of loss')
-parser.add_argument('--iteration_step', type=int, default=3, help='number of iterations') # 20000
-parser.add_argument('--sample_steps', type=int, default=2, help='number of steps for sampling (for validation)')
+parser.add_argument('--iteration_step', type=int, default=8193, help='number of iterations') # 8193
+parser.add_argument('--sample_steps', type=int, default=129, help='number of steps for sampling (for validation)')
 parser.add_argument('--embed_dim', type=int, default=64, help='dimension of embedding')
 parser.add_argument('--embd_type', type=str, default="01", help='timestep embedding type')
 parser.add_argument('--dim_mults', type=int, nargs='+', default=[1, 2, 3, 4, 5, 6], help='dimension multipliers')
@@ -38,19 +38,19 @@ parser.add_argument('--hyper_dim_mults', type=int, nargs='+', default=[4, 4, 4],
 parser.add_argument('--context_dim_mults', type=int, nargs='+', default=[1, 2, 3, 4], help='context dimension multipliers')
 parser.add_argument('--reverse_context_dim_mults', type=int, nargs='+', default=[4, 3, 2, 1], help='reverse context dimension multipliers')
 parser.add_argument('--context_channels', type=int, default=64, help='number of context channels')
-parser.add_argument('--use_weighted_loss', action='store_true', default=True, help='if use weighted loss')
+parser.add_argument('--use_weighted_loss', action='store_true', default=True,  help='if use weighted loss')
 parser.add_argument('--weight_clip', type=int, default=5, help='snr clip for weighted loss')
 parser.add_argument('--use_mixed_precision', action='store_true', help='if use mixed precision')
 parser.add_argument('--clip_noise', action='store_true', help='if clip the noise during sampling')
 parser.add_argument('--val_num_of_batch', type=int, default=1, help='number of batches for validation')
 parser.add_argument('--additional_note', type=str, default='', help='additional note')
 parser.add_argument('--var_schedule', type=str, default='cosine', help='variance schedule')
-parser.add_argument('--aux_loss_type', type=str, default='lpips', help='type of auxiliary loss')
+parser.add_argument('--aux_loss_type', type=str, default='l2', help='type of auxiliary loss')
 parser.add_argument("--aux_weight", type=float, default=0, help="weight for aux loss")
 parser.add_argument("--data_name", type=str, default="vimeo", help="name of dataset")
-parser.add_argument("--data_root", type=str, default="/home/jianglongyu/mydrive/", help="root of dataset")
-parser.add_argument("--params_root", type=str, default="/home/jianglongyu/Documents/models/params_cdc_ldm")
-parser.add_argument("--tensorboard_root", type=str, default="/home/jianglongyu/Documents/models/tblogs_cdc_ldm")
+parser.add_argument("--data_root", type=str, default="/scratch/user/jaron/cdc/dataset", help="root of dataset")
+parser.add_argument("--params_root", type=str, default="/scratch/user/jaron/cdc/params_cdc_ldm")
+parser.add_argument("--tensorboard_root", type=str, default="/scratch/user/jaron/cdc/tblogs_cdc_ldm")
 parser.add_argument("--ae_path", type=str, default="", help="path to autoencoder")
 parser.add_argument("--use_aux_loss_weight_schedule", action="store_true", help="if use aux loss weight schedule")
 

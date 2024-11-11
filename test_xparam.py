@@ -13,10 +13,10 @@ from metrics_cal import calculate_psnr, calculate_lpips
 
 # ptpath = "fall_trained/image-l2-use_weight5-vimeo-d64-t8193-b0.0032-x-cosine-01-float32-aux0_2.pt"
 # ptpath = "pre-trained/image-l2-use_weight5-vimeo-d64-t8193-b0.0032-x-cosine-01-float32-aux0.0_2.pt"
-# ptpath = "pre-trained/image-l2-use_weight5-vimeo-d64-t8193-b0.0064-x-cosine-01-float32-aux0.0_2.pt"
+ptpath = "pre-trained/image-l2-use_weight5-vimeo-d64-t8193-b0.0064-x-cosine-01-float32-aux0.0_2.pt"
 # ptpath = "pre-trained/image-l2-use_weight5-vimeo-d64-t8193-b0.0128-x-cosine-01-float32-aux0.0_2.pt"
 # ptpath = "pre-trained/image-l2-use_weight5-vimeo-d64-t8193-b0.0512-x-cosine-01-float32-aux0.9lpips_2.pt"
-ptpath = "pre-trained/image-l2-use_weight5-vimeo-d64-t8193-b0.2048-x-cosine-01-float32-aux0.9lpips_2.pt"
+# ptpath = "pre-trained/image-l2-use_weight5-vimeo-d64-t8193-b0.2048-x-cosine-01-float32-aux0.9lpips_2.pt"
 parser = argparse.ArgumentParser(description="values from bash script")
 
 parser.add_argument("--ckpt", type=str, default=ptpath) # ckpt path
@@ -25,7 +25,7 @@ parser.add_argument("--n_denoise_step", type=int, default=65) # number of denois
 parser.add_argument("--device", type=int, default=0) # gpu device index
 parser.add_argument("--img_dir", type=str, default='./imgs')
 parser.add_argument("--out_dir", type=str, default='./compressed_imgs')
-parser.add_argument("--lpips_weight", type=float, default=0.9) # either 0.9 or 0.0, note that this must match the ckpt you use, because with weight>0, the lpips-vggnet weights were also saved during training. Incorrect state_dict keys may lead to load_state_dict error when loading the ckpt.
+parser.add_argument("--lpips_weight", type=float, default=0.0) # either 0.9 or 0.0, note that this must match the ckpt you use, because with weight>0, the lpips-vggnet weights were also saved during training. Incorrect state_dict keys may lead to load_state_dict error when loading the ckpt.
 
 config = parser.parse_args()
 
@@ -68,7 +68,7 @@ def main(rank):
         ae_fn=None,
         num_timesteps=8193, # 8193
         loss_type="l2",
-        lagrangian=0.0032,
+        lagrangian=0.0064,
         pred_mode="x",
         aux_loss_weight=config.lpips_weight,
         aux_loss_type="lpips",
@@ -109,7 +109,7 @@ def main(rank):
             img_info["psnr"] = round(psnr, 4)
             img_info["lpips"] = round(lpips, 4)
         result.append(img_info)
-    # save_result(ptpath, result)
+    save_result(ptpath, result)
 
 def print_file_size(file_path):
     size = os.path.getsize(file_path)
